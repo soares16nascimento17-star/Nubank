@@ -5,14 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Nubank</title>
 
-    <!-- CONFIGURAÇÕES PWA E ÍCONES -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Nubank">
     <meta name="theme-color" content="#820AD1">
-    
-    <link rel="apple-touch-icon" href="icon.png">
-    <link rel="icon" type="image/png" href="icon.png">
 
     <style>
         :root {
@@ -60,7 +56,7 @@
             width: 100vw;
             height: 100vh;
             background-color: var(--nu-purple);
-            z-index: 2000;
+            z-index: 3000;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -311,7 +307,154 @@
             fill: currentColor;
         }
 
-        /* --- MODAIS --- */
+        /* --- TELAS DE FLUXO PIX / FULLSCREEN --- */
+        .full-screen-flow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--nu-bg);
+            z-index: 2500;
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .flow-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: calc(env(safe-area-inset-top, 20px) + 12px) 20px 16px 20px;
+        }
+
+        .flow-back-btn {
+            background: none;
+            border: none;
+            color: #FFF;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .flow-content {
+            padding: 16px 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* PIX HOME GRID */
+        .pix-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .pix-grid-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--nu-card);
+            padding: 16px 8px;
+            border-radius: 16px;
+            cursor: pointer;
+            border: none;
+            color: #FFF;
+        }
+
+        .pix-grid-item svg {
+            width: 24px;
+            height: 24px;
+            fill: #FFF;
+            margin-bottom: 8px;
+        }
+
+        .pix-grid-item span {
+            font-size: 12px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* CONTACTS CHIPS */
+        .contacts-scroll {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding: 10px 0;
+            margin-top: 12px;
+        }
+
+        .contacts-scroll::-webkit-scrollbar { display: none; }
+
+        .contact-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #FFF;
+        }
+
+        .contact-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background-color: var(--nu-btn-gray);
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .contact-name {
+            font-size: 12px;
+            color: var(--nu-text-sub);
+            max-width: 64px;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .list-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            cursor: pointer;
+        }
+
+        /* KEYPAD NUMÉRICO SIMULADO DO VÍDEO */
+        .amount-display-container {
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .amount-large {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FFF;
+            margin-top: 8px;
+        }
+
+        .payment-source-box {
+            background-color: var(--nu-card);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            border: 1px solid var(--nu-purple);
+            margin-top: 20px;
+        }
+
+        /* --- MODAIS PADRÃO --- */
         .modal-overlay {
             position: absolute;
             top: 0;
@@ -364,7 +507,7 @@
 
         .btn-sub {
             width: 100%;
-            background-color: var(--nu-btn-gray);
+            background-color: var(--nu-purple);
             color: #FFF;
             padding: 16px;
             border: none;
@@ -407,7 +550,7 @@
                 </button>
             </div>
         </div>
-        <div class="user-greeting" id="main-greeting" onclick="openModal('edit-profile-modal')">Olá, Clara</div>
+        <div class="user-greeting" id="main-greeting" onclick="openModal('edit-profile-modal')">Olá, Rico</div>
     </div>
 
     <!-- CORPO PRINCIPAL -->
@@ -419,7 +562,7 @@
                 <span>Saldo em conta</span>
                 <span class="chevron">❯</span>
             </div>
-            <div class="card-value" id="account-balance">R\$ 0,00</div>
+            <div class="card-value" id="account-balance">R\$ 27.780,00</div>
         </div>
 
         <div style="font-size: 13px; color: var(--nu-text-sub);">
@@ -430,11 +573,9 @@
         <div class="actions-scroll">
             
             <!-- Pix -->
-            <button class="action-item" onclick="openModal('pix-modal')">
+            <button class="action-item" onclick="openPixHome()">
                 <div class="action-circle">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M7 7h8.59L5.29 17.29l1.42 1.42L17 8.41V17h2V5H7v2z"/>
-                    </svg>
+                    <svg viewBox="0 0 24 24"><path d="M7 7h8.59L5.29 17.29l1.42 1.42L17 8.41V17h2V5H7v2z"/></svg>
                 </div>
                 <div class="action-label">Área Pix e Transferir</div>
             </button>
@@ -442,9 +583,7 @@
             <!-- Pagar -->
             <button class="action-item" onclick="openModal('pay-modal')">
                 <div class="action-circle">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z"/>
-                    </svg>
+                    <svg viewBox="0 0 24 24"><path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z"/></svg>
                 </div>
                 <div class="action-label">Pagar</div>
             </button>
@@ -452,9 +591,7 @@
             <!-- Pegar emprestado -->
             <button class="action-item" onclick="openModal('loan-modal')">
                 <div class="action-circle">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
-                    </svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
                 </div>
                 <div class="action-badge">FGTS</div>
                 <div class="action-label">Pegar emprestado</div>
@@ -463,9 +600,7 @@
             <!-- Recarga de celular -->
             <button class="action-item" onclick="openModal('recharge-modal')">
                 <div class="action-circle">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/>
-                    </svg>
+                    <svg viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
                 </div>
                 <div class="action-label">Recarga de celular</div>
             </button>
@@ -473,9 +608,7 @@
             <!-- Caixinhas Invest -->
             <button class="action-item" onclick="openModal('invest-modal')">
                 <div class="action-circle">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
-                    </svg>
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
                 </div>
                 <div class="action-label">Caixinhas Invest</div>
             </button>
@@ -535,12 +668,298 @@
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- FLUXO TELA 1: ÁREA PIX HOME -->
+    <!-- ========================================== -->
+    <div class="full-screen-flow" id="flow-pix-home">
+        <div class="flow-header">
+            <button class="flow-back-btn" onclick="closePixHome()">✕</button>
+        </div>
+        <div class="flow-content">
+            <div style="font-size: 22px; font-weight: 700; margin-bottom: 6px;">Área Pix</div>
+            <p style="color: var(--nu-text-sub); font-size: 14px; margin-bottom: 20px;">Envie e receba pagamentos a qualquer hora e dia da semana, sem pagar nada por isso.</p>
+            
+            <div class="pix-grid">
+                <button class="pix-grid-item" onclick="openPixTransfer('Gucci Shopping Plazza')">
+                    <svg viewBox="0 0 24 24"><path d="M7 7h8.59L5.29 17.29l1.42 1.42L17 8.41V17h2V5H7v2z"/></svg>
+                    <span>Transferir</span>
+                </button>
+                <button class="pix-grid-item">
+                    <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                    <span>Programar</span>
+                </button>
+                <button class="pix-grid-item">
+                    <svg viewBox="0 0 24 24"><path d="M2 9h2V7H2v2zm4 0h2V7H6v2zm-4 4h2v-2H2v2zm4 0h2v-2H6v2zm-4 4h2v-2H2v2zm4 0h2v-2H6v2zM12 2h-2v2h2V2zm0 4h-2v2h2V6zm4-4h-2v2h2V2zm0 4h-2v2h2V6zm4-4h-2v2h2V2zm0 4h-2v2h2V6z"/></svg>
+                    <span>Ler qr code</span>
+                </button>
+                <button class="pix-grid-item">
+                    <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                    <span>Pix Copia e Cola</span>
+                </button>
+                <button class="pix-grid-item">
+                    <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                    <span>Cobrar</span>
+                </button>
+                <button class="pix-grid-item">
+                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    <span>Depositar</span>
+                </button>
+            </div>
+
+            <div style="margin-top: 32px;">
+                <div style="font-size: 14px; color: var(--nu-text-sub); margin-bottom: 12px;">Preferências</div>
+                <div class="list-item-row">
+                    <span style="font-size: 15px; font-weight: 600;">Pix automático</span>
+                    <span style="color: var(--nu-text-sub);">❯</span>
+                </div>
+                <div class="list-item-row">
+                    <span style="font-size: 15px; font-weight: 600;">Registrar ou trazer chaves</span>
+                    <span style="color: var(--nu-text-sub);">❯</span>
+                </div>
+                <div class="list-item-row">
+                    <span style="font-size: 15px; font-weight: 600;">Meus limites</span>
+                    <span style="color: var(--nu-text-sub);">❯</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- FLUXO TELA 2: SELECIONAR CONTATO PIX -->
+    <!-- ========================================== -->
+    <div class="full-screen-flow" id="flow-pix-recipient">
+        <div class="flow-header">
+            <button class="flow-back-btn" onclick="closePixRecipient()">❮</button>
+        </div>
+        <div class="flow-content">
+            <div style="font-size: 18px; font-weight: 700; margin-bottom: 16px;">Para quem você quer transferir?</div>
+            <input type="text" class="field-input" placeholder="Nome, CPF/CNPJ ou chave Pix">
+            
+            <div style="font-size: 13px; color: var(--nu-text-sub); margin: 16px 0 8px 0;">Você sempre costuma pagar</div>
+            
+            <div class="contacts-scroll">
+                <button class="contact-chip" onclick="openPixTransfer('Fábio Vieira')">
+                    <div class="contact-avatar">FV</div>
+                    <span class="contact-name">Fábio Vieira</span>
+                </button>
+                <button class="contact-chip" onclick="openPixTransfer('Flávio Duarte')">
+                    <div class="contact-avatar">FD</div>
+                    <span class="contact-name">Flávio Duarte</span>
+                </button>
+                <button class="contact-chip" onclick="openPixTransfer('Luís Fernando')">
+                    <div class="contact-avatar">LF</div>
+                    <span class="contact-name">Luís Fernando</span>
+                </button>
+            </div>
+
+            <div style="font-size: 13px; color: var(--nu-text-sub); margin: 24px 0 8px 0;">Todos os seus contatos</div>
+            <div class="list-item-row" onclick="openPixTransfer('Gucci Shopping Plazza')">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 36px; height: 36px; background: #222; border-radius: 50%; display: flex; align-items: center; justify-content: center;">🏢</div>
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600;">59.429.182 Gucci Shopping Plazza</div>
+                    </div>
+                </div>
+            </div>
+            <div class="list-item-row" onclick="openPixTransfer('Zara Shopping Plazza')">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 36px; height: 36px; background: #222; border-radius: 50%; display: flex; align-items: center; justify-content: center;">🏢</div>
+                    <div>
+                        <div style="font-size: 14px; font-weight: 600;">61.315.182 Zara Shopping Plazza</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- FLUXO TELA 3: DIGITAR VALOR DA TRANSFERÊNCIA -->
+    <!-- ========================================== -->
+    <div class="full-screen-flow" id="flow-pix-amount">
+        <div class="flow-header">
+            <button class="flow-back-btn" onclick="closePixAmount()">❮</button>
+        </div>
+        <div class="flow-content">
+            <div style="font-size: 13px; color: var(--nu-text-sub);">Transferir para</div>
+            <div style="font-size: 16px; font-weight: 700; margin-top: 4px;" id="transfer-target-name">GUCCI SHOPPING PLAZZA</div>
+            
+            <div class="amount-display-container">
+                <div style="font-size: 14px; color: var(--nu-text-sub);">Valor</div>
+                <div class="amount-large" id="transfer-typed-amount">R\$ 0,01</div>
+            </div>
+
+            <div class="payment-source-box">
+                <div style="font-size: 12px; color: var(--nu-text-sub);">Pagando com</div>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 4px;">
+                    <span style="font-size: 14px; font-weight: 600;">Saldo Nubank</span>
+                    <span style="font-size: 13px; color: var(--nu-text-sub);" id="transfer-current-balance-label">Atual: R\$ 27.780,00</span>
+                </div>
+            </div>
+
+            <!-- TECLADO NUMÉRICO SIMULADO DO VÍDEO -->
+            <div style="margin-top: auto; padding-bottom: 20px;">
+                <div style="display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px;">
+                    <span style="color: var(--nu-text-sub); font-size: 18px;">⌄</span>
+                    <span style="color: var(--nu-text-sub); font-size: 18px;">✓</span>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center;">
+                    <button onclick="appendAmount('1')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">1</button>
+                    <button onclick="appendAmount('2')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">2</button>
+                    <button onclick="appendAmount('3')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">3</button>
+                    <button onclick="appendAmount('4')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">4</button>
+                    <button onclick="appendAmount('5')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">5</button>
+                    <button onclick="appendAmount('6')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">6</button>
+                    <button onclick="appendAmount('7')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">7</button>
+                    <button onclick="appendAmount('8')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">8</button>
+                    <button onclick="appendAmount('9')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">9</button>
+                    <button onclick="appendAmount('00')" style="background:none; border:none; color:#FFF; font-size:20px; padding:12px; cursor:pointer;">00</button>
+                    <button onclick="appendAmount('0')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">0</button>
+                    <button onclick="backspaceAmount()" style="background:none; border:none; color:#FFF; font-size:20px; padding:12px; cursor:pointer;">⌫</button>
+                </div>
+                <button class="btn-sub" style="margin-top: 16px;" onclick="openPixReview()">Continuar com saldo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- FLUXO TELA 4: REVISÃO DA TRANSFERÊNCIA -->
+    <!-- ========================================== -->
+    <div class="full-screen-flow" id="flow-pix-review">
+        <div class="flow-header">
+            <button class="flow-back-btn" onclick="closePixReview()">❮</button>
+        </div>
+        <div class="flow-content">
+            <div style="font-size: 20px; font-weight: 700; margin-bottom: 24px;">Você vai enviar</div>
+            
+            <div class="list-item-row">
+                <div>
+                    <div style="font-size: 18px; font-weight: 700;" id="review-amount-text">R\$ 120,00</div>
+                    <div style="font-size: 13px; color: var(--nu-text-sub);">Saldo Nubank</div>
+                </div>
+                <span style="color: var(--nu-text-sub);">✎</span>
+            </div>
+
+            <div class="list-item-row">
+                <div>
+                    <div style="font-size: 16px; font-weight: 600;" id="review-target-text">GUCCI SHOPPING PLAZZA</div>
+                    <div style="font-size: 13px; color: var(--nu-text-sub);">Instituição Financeira Ltda</div>
+                </div>
+                <span style="color: var(--nu-text-sub);">✎</span>
+            </div>
+
+            <div style="margin-top: 24px;">
+                <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">Quando</div>
+                <div style="font-size: 14px; color: var(--nu-text-sub);">Agora, sem repetir</div>
+            </div>
+
+            <div style="margin-top: 24px;">
+                <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">Via</div>
+                <div style="font-size: 14px; color: var(--nu-text-sub);">Pix</div>
+            </div>
+
+            <div style="margin-top: auto; padding-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <div style="font-size: 12px; color: var(--nu-text-sub);" id="review-total-bottom">R\$ 120,00</div>
+                    <div style="font-size: 12px; font-weight: 600;">Valor Total</div>
+                </div>
+                <button class="btn-sub" style="width: auto; padding: 14px 32px; border-radius: 30px;" onclick="openPixPassword()">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- FLUXO TELA 5: SENHA DE 4 DÍGITOS -->
+    <!-- ========================================== -->
+    <div class="full-screen-flow" id="flow-pix-password">
+        <div class="flow-header">
+            <button class="flow-back-btn" onclick="closePixPassword()">❮</button>
+        </div>
+        <div class="flow-content" style="align-items: center; text-align: center;">
+            <div style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Digite sua senha de 4 dígitos</div>
+            <p style="font-size: 13px; color: var(--nu-text-sub); margin-bottom: 30px;">Essa é a mesma senha de 4 dígitos do seu cartão do Nubank</p>
+            
+            <div style="display: flex; gap: 16px; margin-bottom: 40px;">
+                <div style="width: 12px; height: 12px; border-radius: 50%; background: #444;" id="p-dot-1"></div>
+                <div style="width: 12px; height: 12px; border-radius: 50%; background: #444;" id="p-dot-2"></div>
+                <div style="width: 12px; height: 12px; border-radius: 50%; background: #444;" id="p-dot-3"></div>
+                <div style="width: 12px; height: 12px; border-radius: 50%; background: #444;" id="p-dot-4"></div>
+            </div>
+
+            <div style="margin-top: auto; width: 100%;">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center;">
+                    <button onclick="appendPassword('1')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">1</button>
+                    <button onclick="appendPassword('2')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">2</button>
+                    <button onclick="appendPassword('3')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">3</button>
+                    <button onclick="appendPassword('4')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">4</button>
+                    <button onclick="appendPassword('5')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">5</button>
+                    <button onclick="appendPassword('6')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">6</button>
+                    <button onclick="appendPassword('7')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">7</button>
+                    <button onclick="appendPassword('8')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">8</button>
+                    <button onclick="appendPassword('9')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">9</button>
+                    <div></div>
+                    <button onclick="appendPassword('0')" style="background:none; border:none; color:#FFF; font-size:24px; padding:12px; cursor:pointer;">0</button>
+                    <button onclick="backspacePassword()" style="background:none; border:none; color:#FFF; font-size:20px; padding:12px; cursor:pointer;">⌫</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- FLUXO TELA 6: PROCESSANDO (TRANSFERINDO) -->
+    <!-- ========================================== -->
+    <div class="full-screen-flow" id="flow-pix-loading" style="justify-content: center; padding: 40px;">
+        <div style="font-size: 24px; font-weight: 700; margin-bottom: 24px;" id="loading-status-text">Transferindo...</div>
+        <div style="width: 100%; height: 4px; background: #222; border-radius: 2px; overflow: hidden;">
+            <div style="width: 50%; height: 100%; background: var(--nu-purple); animation: loadBar 1.5s infinite linear;"></div>
+        </div>
+    </div>
+    <style>
+        @keyframes loadBar {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+    </style>
+
+    <!-- ========================================== -->
+    <!-- FLUXO TELA 7: SUCESSO / COMPROVANTE -->
+    <!-- ========================================== -->
+    <div class="full-screen-flow" id="flow-pix-success">
+        <div class="flow-header">
+            <button class="flow-back-btn" onclick="finishSuccessFlow()">✕</button>
+        </div>
+        <div class="flow-content" style="align-items: center; text-align: center; padding-top: 40px;">
+            <!-- Círculos característicos do vídeo -->
+            <div style="position: relative; width: 100px; height: 80px; margin-bottom: 24px;">
+                <div style="position: absolute; left: 0; bottom: 0; width: 48px; height: 48px; background: var(--nu-purple); border-radius: 50%;"></div>
+                <div style="position: absolute; left: 30px; top: 0; width: 48px; height: 48px; background: var(--nu-purple); border-radius: 50%;"></div>
+                <div style="position: absolute; right: 0; top: 10px; width: 40px; height: 40px; background: #26A69A; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #FFF; font-weight: bold;">✓</div>
+            </div>
+
+            <div style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Sua transferência foi concluída</div>
+            <div style="font-size: 22px; font-weight: 700; margin-bottom: 24px;" id="success-amount-display">R\$ 120,00</div>
+            <div style="font-size: 13px; color: var(--nu-text-sub); margin-bottom: 32px;" id="success-target-display">PARA GUCCI SHOPPING PLAZZA</div>
+
+            <div style="width: 100%; text-align: left; background: var(--nu-card); border-radius: 16px; padding: 16px; margin-bottom: auto;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="color: var(--nu-text-sub); font-size: 13px;">Instituição</span>
+                    <span style="font-size: 13px; font-weight: 600;">INSTITUIÇÃO FINANCEIRA LTDA</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--nu-text-sub); font-size: 13px;">Quando</span>
+                    <span style="font-size: 13px; font-weight: 600;">Agora</span>
+                </div>
+            </div>
+
+            <button class="btn-sub" style="background-color: var(--nu-btn-gray); border: 1px solid #333;" onclick="finishSuccessFlow()">Abrir comprovante</button>
+        </div>
+    </div>
+
     <!-- MODAL EDITAR SALDO -->
     <div class="modal-overlay" id="edit-balance-modal">
         <div class="sheet">
             <div class="sheet-indicator"></div>
             <div class="sheet-title" style="font-size: 16px; margin-bottom: 12px;">Digite o novo saldo:</div>
-            <input type="text" class="field-input" id="input-new-balance" placeholder="0,00">
+            <input type="text" class="field-input" id="input-new-balance" placeholder="27780,00">
             <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
                 <button style="background: none; border: none; color: #A1A1A1; font-weight: 600; font-size: 15px; cursor: pointer; padding: 10px;" onclick="closeModal('edit-balance-modal')">Cancelar</button>
                 <button style="background: none; border: none; color: #A020F0; font-weight: 700; font-size: 15px; cursor: pointer; padding: 10px;" onclick="saveNewBalance()">OK</button>
@@ -553,7 +972,7 @@
         <div class="sheet">
             <div class="sheet-indicator"></div>
             <div class="sheet-title" style="font-size: 16px; margin-bottom: 12px;">Digite o novo nome:</div>
-            <input type="text" class="field-input" id="input-new-name" placeholder="Nome">
+            <input type="text" class="field-input" id="input-new-name" placeholder="Rico">
             <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
                 <button style="background: none; border: none; color: #A1A1A1; font-weight: 600; font-size: 15px; cursor: pointer; padding: 10px;" onclick="closeModal('edit-profile-modal')">Cancelar</button>
                 <button style="background: none; border: none; color: #A020F0; font-weight: 700; font-size: 15px; cursor: pointer; padding: 10px;" onclick="saveNewProfile()">OK</button>
@@ -574,76 +993,38 @@
         </div>
     </div>
 
-    <!-- MODAL PIX -->
-    <div class="modal-overlay" id="pix-modal">
-        <div class="sheet">
-            <div class="sheet-indicator"></div>
-            <div class="sheet-title">Área Pix</div>
-            <p style="color: var(--nu-text-sub); font-size: 14px; margin-bottom: 16px;">Envie e receba pagamentos a qualquer hora e dia da semana, sem pagar nada por isso.</p>
-            <button class="btn-sub" onclick="closeModal('pix-modal')">Fechar</button>
-        </div>
-    </div>
-
-    <!-- MODAL PAGAR -->
+    <!-- OUTROS MODAIS SIMPLES -->
     <div class="modal-overlay" id="pay-modal">
-        <div class="sheet">
-            <div class="sheet-indicator"></div>
-            <div class="sheet-title">Pagar</div>
-            <p style="color: var(--nu-text-sub); font-size: 14px; margin-bottom: 16px;">Pague boletos de contas, água, luz, telefone e carnês.</p>
-            <button class="btn-sub" onclick="closeModal('pay-modal')">Fechar</button>
-        </div>
+        <div class="sheet"><div class="sheet-indicator"></div><div class="sheet-title">Pagar</div><p style="color: var(--nu-text-sub); font-size: 14px; margin-bottom: 16px;">Pague boletos de contas, água, luz e telefone.</p><button class="btn-sub" onclick="closeModal('pay-modal')">Fechar</button></div>
     </div>
-
-    <!-- MODAL EMPRÉSTIMO -->
     <div class="modal-overlay" id="loan-modal">
-        <div class="sheet">
-            <div class="sheet-indicator"></div>
-            <div class="sheet-title">Empréstimo</div>
-            <p style="color: var(--nu-text-sub); font-size: 14px; margin-bottom: 8px;">Valor disponível de até</p>
-            <div style="font-size: 22px; font-weight: 700; margin-bottom: 16px;">R\$ 50.000,00</div>
-            <button class="btn-sub" onclick="closeModal('loan-modal')">Fechar</button>
-        </div>
+        <div class="sheet"><div class="sheet-indicator"></div><div class="sheet-title">Empréstimo</div><p style="color: var(--nu-text-sub); font-size: 14px; margin-bottom: 8px;">Valor disponível de até</p><div style="font-size: 22px; font-weight: 700; margin-bottom: 16px;">R\$ 50.000,00</div><button class="btn-sub" onclick="closeModal('loan-modal')">Fechar</button></div>
     </div>
-
-    <!-- MODAL RECARGA -->
     <div class="modal-overlay" id="recharge-modal">
-        <div class="sheet">
-            <div class="sheet-indicator"></div>
-            <div class="sheet-title">Recarga de celular</div>
-            <p style="color: var(--nu-text-sub); font-size: 14px; margin-bottom: 16px;">Escolha o operador e recarregue seu telemóvel instantaneamente.</p>
-            <button class="btn-sub" onclick="closeModal('recharge-modal')">Fechar</button>
-        </div>
+        <div class="sheet"><div class="sheet-indicator"></div><div class="sheet-title">Recarga de celular</div><p style="color: var(--nu-text-sub); font-size: 14px; margin-bottom: 16px;">Recarregue seu telemóvel instantaneamente.</p><button class="btn-sub" onclick="closeModal('recharge-modal')">Fechar</button></div>
     </div>
-
-    <!-- MODAL INVESTIMENTOS -->
     <div class="modal-overlay" id="invest-modal">
-        <div class="sheet">
-            <div class="sheet-indicator"></div>
-            <div class="sheet-title">Caixinhas Invest</div>
-            <p style="color: var(--nu-text-sub); font-size: 14px; margin-bottom: 16px;">Guarde dinheiro com rendimento diário de forma simples e organizada.</p>
-            <button class="btn-sub" onclick="closeModal('invest-modal')">Fechar</button>
-        </div>
+        <div class="sheet"><div class="sheet-indicator"></div><div class="sheet-title">Caixinhas Invest</div><p style="color: var(--nu-text-sub); font-size: 14px; margin-bottom: 16px;">Guarde dinheiro com rendimento diário.</p><button class="btn-sub" onclick="closeModal('invest-modal')">Fechar</button></div>
     </div>
-
-    <!-- MODAL CARTÕES -->
     <div class="modal-overlay" id="cards-modal">
-        <div class="sheet">
-            <div class="sheet-indicator"></div>
-            <div class="sheet-title">Meus cartões</div>
-            <p style="color: var(--nu-text-sub); font-size: 14px; margin-bottom: 16px;">Gerencie seus cartões físicos e virtuais, senha e bloqueios.</p>
-            <button class="btn-sub" onclick="closeModal('cards-modal')">Fechar</button>
-        </div>
+        <div class="sheet"><div class="sheet-indicator"></div><div class="sheet-title">Meus cartões</div><p style="color: var(--nu-text-sub); font-size: 14px; margin-bottom: 16px;">Gerencie seus cartões físicos e virtuais.</p><button class="btn-sub" onclick="closeModal('cards-modal')">Fechar</button></div>
     </div>
 
 </div>
 
 <script>
     let state = {
-        userName: "Clara",
-        balance: 0.00,
+        userName: "Rico",
+        balance: 27780.00,
         invoice: 0.00,
         creditLimit: 5000.00,
         hideBalance: false
+    };
+
+    let pixState = {
+        targetName: "GUCCI SHOPPING PLAZZA",
+        rawAmount: "12000", // R\$ 120,00
+        passwordDigits: ""
     };
 
     window.addEventListener('load', () => {
@@ -652,6 +1033,7 @@
             splash.style.opacity = '0';
             setTimeout(() => { splash.style.display = 'none'; }, 500);
         }, 1200);
+        updateUI();
     });
 
     function formatBRL(value) {
@@ -660,10 +1042,8 @@
 
     function updateUI() {
         document.getElementById('main-greeting').innerText = `Olá, ${state.userName}`;
-        
         const valBalance = state.hideBalance ? "•••••" : formatBRL(state.balance);
         const valInvoice = state.hideBalance ? "•••••" : formatBRL(state.invoice);
-
         document.getElementById('account-balance').innerText = valBalance;
         document.getElementById('invoice-amount').innerText = valInvoice;
     }
@@ -673,25 +1053,15 @@
         updateUI();
     }
 
-    function openModal(id) {
-        document.getElementById(id).style.display = 'flex';
-    }
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    function closeModal(id) {
-        document.getElementById(id).style.display = 'none';
-    }
-
-    function triggerPhotoUpload() {
-        document.getElementById('file-input').click();
-    }
-
+    function triggerPhotoUpload() { document.getElementById('file-input').click(); }
     function handlePhotoUpload(event) {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('profile-img').src = e.target.result;
-            };
+            reader.onload = function(e) { document.getElementById('profile-img').src = e.target.result; };
             reader.readAsDataURL(file);
         }
     }
@@ -725,7 +1095,109 @@
         closeModal('edit-invoice-modal');
     }
 
-    updateUI();
+    // --- CONTROLES DE FLUXO PIX DO VÍDEO ---
+    function openPixHome() { document.getElementById('flow-pix-home').style.display = 'flex'; }
+    function closePixHome() { document.getElementById('flow-pix-home').style.display = 'none'; }
+
+    function openPixTransfer(name) {
+        pixState.targetName = name;
+        document.getElementById('flow-pix-home').style.display = 'none';
+        document.getElementById('flow-pix-recipient').style.display = 'flex';
+        // Auto avança para simular o comportamento fluido do vídeo ao clicar
+        setTimeout(() => {
+            document.getElementById('flow-pix-recipient').style.display = 'none';
+            document.getElementById('transfer-target-name').innerText = name.toUpperCase();
+            document.getElementById('transfer-current-balance-label').innerText = `Atual: ${formatBRL(state.balance)}`;
+            document.getElementById('flow-pix-amount').style.display = 'flex';
+        }, 200);
+    }
+    function closePixRecipient() { document.getElementById('flow-pix-recipient').style.display = 'none'; }
+    function closePixAmount() { document.getElementById('flow-pix-amount').style.display = 'none'; }
+
+    function appendAmount(char) {
+        if (pixState.rawAmount.length < 10) {
+            pixState.rawAmount += char;
+            renderFormattedAmount();
+        }
+    }
+    function backspaceAmount() {
+        if (pixState.rawAmount.length > 0) {
+            pixState.rawAmount = pixState.rawAmount.slice(0, -1);
+            if (pixState.rawAmount === "") pixState.rawAmount = "0";
+            renderFormattedAmount();
+        }
+    }
+    function renderFormattedAmount() {
+        const numericVal = parseInt(pixState.rawAmount || "0") / 100;
+        document.getElementById('transfer-typed-amount').innerText = formatBRL(numericVal);
+    }
+
+    function openPixReview() {
+        const numericVal = parseInt(pixState.rawAmount || "0") / 100;
+        const formatted = formatBRL(numericVal);
+        document.getElementById('review-amount-text').innerText = formatted;
+        document.getElementById('review-target-text').innerText = pixState.targetName.toUpperCase();
+        document.getElementById('review-total-bottom').innerText = formatted;
+        document.getElementById('flow-pix-amount').style.display = 'none';
+        document.getElementById('flow-pix-review').style.display = 'flex';
+    }
+    function closePixReview() { document.getElementById('flow-pix-review').style.display = 'none'; }
+
+    function openPixPassword() {
+        pixState.passwordDigits = "";
+        updatePasswordDots();
+        document.getElementById('flow-pix-review').style.display = 'none';
+        document.getElementById('flow-pix-password').style.display = 'flex';
+    }
+    function closePixPassword() { document.getElementById('flow-pix-password').style.display = 'none'; }
+
+    function appendPassword(digit) {
+        if (pixState.passwordDigits.length < 4) {
+            pixState.passwordDigits += digit;
+            updatePasswordDots();
+            if (pixState.passwordDigits.length === 4) {
+                // Dispara o loading igualzinho ao vídeo
+                setTimeout(() => {
+                    document.getElementById('flow-pix-password').style.display = 'none';
+                    document.getElementById('loading-status-text').innerText = "Transferindo...";
+                    document.getElementById('flow-pix-loading').style.display = 'flex';
+                    
+                    setTimeout(() => {
+                        document.getElementById('loading-status-text').innerText = "Gerando comprovante...";
+                        setTimeout(() => {
+                            document.getElementById('flow-pix-loading').style.display = 'none';
+                            const numericVal = parseInt(pixState.rawAmount || "0") / 100;
+                            state.balance -= numericVal; // Desconta do saldo real
+                            updateUI();
+                            document.getElementById('success-amount-display').innerText = formatBRL(numericVal);
+                            document.getElementById('success-target-display').innerText = `PARA ${pixState.targetName.toUpperCase()}`;
+                            document.getElementById('flow-pix-success').style.display = 'flex';
+                        }, 1200);
+                    }, 1500);
+                }, 400);
+            }
+        }
+    }
+    function backspacePassword() {
+        if (pixState.passwordDigits.length > 0) {
+            pixState.passwordDigits = pixState.passwordDigits.slice(0, -1);
+            updatePasswordDots();
+        }
+    }
+    function updatePasswordDots() {
+        for (let i = 1; i <= 4; i++) {
+            const dot = document.getElementById(`p-dot-${i}`);
+            if (i <= pixState.passwordDigits.length) {
+                dot.style.background = "#FFF";
+            } else {
+                dot.style.background = "#444";
+            }
+        }
+    }
+
+    function finishSuccessFlow() {
+        document.getElementById('flow-pix-success').style.display = 'none';
+    }
 </script>
 
 </body>
