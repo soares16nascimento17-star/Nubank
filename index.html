@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Nubank</title>
 
-    <!-- CONFIGURAÇÕES PWA E ÍCONES DA TELA INICIAL -->
+    <!-- CONFIGURAÇÕES PWA E ÍCONES -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Nubank">
     <meta name="theme-color" content="#820AD1">
     
-    <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/uizard-assets/logos/main/nubank.png">
-    <link rel="apple-touch-icon-precomposed" href="https://raw.githubusercontent.com/uizard-assets/logos/main/nubank.png">
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/uizard-assets/logos/main/nubank.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" type="image/png" href="icon.png">
 
     <style>
         :root {
@@ -105,7 +104,6 @@
             justify-content: center;
             cursor: pointer;
             overflow: hidden;
-            position: relative;
         }
 
         .profile-btn img {
@@ -266,7 +264,7 @@
             cursor: pointer;
         }
 
-        /* MENU INFERIOR FLUTUANTE DE 3 ÍCONES */
+        /* MENU INFERIOR FLUTUANTE */
         .bottom-nav-container {
             position: absolute;
             bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
@@ -313,7 +311,7 @@
             fill: currentColor;
         }
 
-        /* --- MODAIS ESTILO NUBANK --- */
+        /* --- MODAIS --- */
         .modal-overlay {
             position: absolute;
             top: 0;
@@ -398,7 +396,6 @@
             <div class="profile-btn" onclick="triggerPhotoUpload()">
                 <img id="profile-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Perfil">
             </div>
-            <!-- Input escondido para carregar foto da galeria -->
             <input type="file" id="file-input" style="display: none;" accept="image/*" onchange="handlePhotoUpload(event)">
 
             <div class="header-actions">
@@ -416,7 +413,7 @@
     <!-- CORPO PRINCIPAL -->
     <div class="nu-body">
         
-        <!-- SALDO DA CONTA (Clica para editar o saldo) -->
+        <!-- SALDO DA CONTA -->
         <div class="account-section" onclick="openModal('edit-balance-modal')">
             <div class="card-row">
                 <span>Saldo em conta</span>
@@ -425,17 +422,17 @@
             <div class="card-value" id="account-balance">R\$ 0,00</div>
         </div>
 
-        <div style="font-size: 13px; color: var(--nu-text-sub); display: flex; align-items: center; gap: 6px;">
+        <div style="font-size: 13px; color: var(--nu-text-sub);">
             <span>+ Vincular conta</span>
         </div>
 
-        <!-- ROLAGEM DE BOTÕES DE AÇÃO EXATOS DO VÍDEO -->
+        <!-- ROLAGEM DE BOTÕES DE AÇÃO -->
         <div class="actions-scroll">
             
             <button class="action-item" onclick="openModal('pix-modal')">
                 <div class="action-circle">
                     <svg viewBox="0 0 512 512">
-                        <path d="M362.2 161.4l-68.5 68.5c-7.8 7.8-20.5 7.8-28.3 0l-68.5-68.5c-20.7-20.7-54.3-20.7-75 0l-23 23c-20.7 20.7-20.7 54.3 0 75l68.5 68.5c7.8 7.8 7.8 20.5 0 28.3l-68.5 68.5c-20.7 20.7-20.7 54.3 0 75l23 23c20.7 20.7 54.3 20.7 75 0l68.5-68.5c7.8-7.8 20.5-7.8 28.3 0l68.5 68.5c20.7 20.7 54.3 20.7 75 0l23-23c20.7-20.7 20.7-54.3 0-75l-68.5-68.5c-7.8-7.8-7.8-20.5 0-28.3l68.5-68.5c-20.7-20.7-20.7-54.3 0-75l-23-23c-20.7-20.7-54.3-20.7-75 0z"/>
+                        <path d="M362.2 161.4l-68.5 68.5c-7.8 7.8-20.5 7.8-28.3 0l-68.5-68.5c-20.7-20.7-54.3-20.7-75 0l-23 23c-20.7 20.7-20.7 54.3 0 75l68.5 68.5c7.8 7.8 7.8 20.5 0 28.3l-68.5 68.5c-20.7 20.7-20.7 54.3 0 75l23 23c20.7 20.7 54.3 20.7 75 0l68.5-68.5c7.8-7.8 20.5-7.8 28.3 0l68.5 68.5c20.7 20.7 54.3 20.7 75 0l23-23c20.7-20.7 20.7-54.3 0-75l-68.5-68.5c-7.8-7.8-7.8-20.5 0-28.3l68.5-68.5c20.7-20.7 20.7-54.3 0-75l-23-23c-20.7-20.7-54.3-20.7-75 0z"/>
                     </svg>
                 </div>
                 <div class="action-label">Área Pix e Transferir</div>
@@ -482,7 +479,7 @@
             <span>Meus cartões</span>
         </div>
 
-        <!-- BANNER DE SEGURO COM CADEADO -->
+        <!-- BANNER SEGURO -->
         <div class="nu-card" style="position: relative; overflow: hidden;">
             <div style="font-size: 13px; color: var(--nu-text-main); margin-bottom: 4px;">Nubank Vida: seguro a partir de R\$ 4/mês.</div>
             <div style="display: flex; gap: 4px; margin-top: 12px;">
@@ -495,7 +492,7 @@
             </div>
         </div>
 
-        <!-- CARTÃO DE CRÉDITO (Clica para editar fatura) -->
+        <!-- CARTÃO DE CRÉDITO -->
         <div class="nu-card" onclick="openModal('edit-invoice-modal')">
             <div class="card-row">
                 <span>Cartão de crédito</span>
@@ -516,7 +513,7 @@
         </div>
     </div>
 
-    <!-- MENU FLUTUANTE INFERIOR -->
+    <!-- MENU INFERIOR -->
     <div class="bottom-nav-container">
         <div class="bottom-nav-pill">
             <div class="nav-btn active">
@@ -531,7 +528,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE EDITAR SALDO -->
+    <!-- MODAL EDITAR SALDO -->
     <div class="modal-overlay" id="edit-balance-modal">
         <div class="sheet">
             <div class="sheet-indicator"></div>
@@ -544,7 +541,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE EDITAR NOME -->
+    <!-- MODAL EDITAR NOME -->
     <div class="modal-overlay" id="edit-profile-modal">
         <div class="sheet">
             <div class="sheet-indicator"></div>
@@ -557,7 +554,7 @@
         </div>
     </div>
 
-    <!-- MODAL DE EDITAR FATURA -->
+    <!-- MODAL EDITAR FATURA -->
     <div class="modal-overlay" id="edit-invoice-modal">
         <div class="sheet">
             <div class="sheet-indicator"></div>
@@ -677,12 +674,10 @@
         document.getElementById(id).style.display = 'none';
     }
 
-    // Função para acionar o seletor de fotos da galeria do telemóvel
     function triggerPhotoUpload() {
         document.getElementById('file-input').click();
     }
 
-    // Função para processar a foto escolhida da galeria
     function handlePhotoUpload(event) {
         const file = event.target.files[0];
         if (file) {
